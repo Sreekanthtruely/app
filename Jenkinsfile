@@ -1,22 +1,25 @@
 pipeline {
     agent any
     
+    environment{
+        registry = "sragro/test"
+        registryCredential = 'Dockerhub'
+    }
+    
     stages{
         stage("build"){
             steps{
-                sh 'mvn clean install'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
             
         }
     }
 }
      stage('Publish') {
-          environment {
-              registryCredential = 'dockerhub'
-          }
+          
           steps{
               script {
-                  def appimage = docker.build registry + ":$BUILD_NUMBER"
                   docker.withRegistry( '', registryCredential ) {
                       appimage.push()
                       appimage.push('latest')
