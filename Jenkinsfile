@@ -16,8 +16,8 @@ pipeline {
         }
     }
 }
-     stage("Deploy Image") {
-          steps{
+        stage("Deploy Image") {
+           steps{
               script {
                   docker.withRegistry( '', registryCredential ) {
                       appimage.push()
