@@ -1,11 +1,5 @@
 pipeline {
-    agent any 
-    # node{
-        #label "java_slave"
-     
-    
-    # environment {
-        # PATH = "/opt/maven/bin:$PATH"
+    agent any
     
     stages{
         stage("build"){
