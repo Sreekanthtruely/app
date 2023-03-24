@@ -1,14 +1,17 @@
 pipeline {
+    agent any
 
     /*
      * Run everything on an existing agent configured with a label 'docker'.
      * This agent will need docker, git and a jdk installed at a minimum.
-     */
-    agent {
-        node {
-            label 'docker'
-        }
-    }
+     
+    * agent {
+     *   node {
+     *       label 'docker'
+      *  }
+    *}
+    */
+    
 
     // using the Timestamper plugin we can add timestamps to the console log
     options {
@@ -49,7 +52,7 @@ pipeline {
         }
 
         stage('Quality Analysis') {
-            parallel {
+            
                 // run Sonar Scan and Integration tests in parallel. This syntax requires Declarative Pipeline 1.2 or higher
                 stage('Integration Test') {
                     agent any  //run this stage on any available agent
@@ -57,28 +60,11 @@ pipeline {
                         echo 'Run integration tests here...'
                     }
                 }
-                stage('Sonar Scan') {
-                    agent {
-                        docker {
-                            // we can use the same image and workspace as we did previously
-                            reuseNode true
-                            image 'maven:3.5.0-jdk-8'
-                        }
-                    }
-                    environment {
-                        //use 'sonar' credentials scoped only to this stage
-                        SONAR = credentials('sonar')
-                    }
-                    steps {
-                        sh 'mvn sonar:sonar -Dsonar.login=$SONAR_PSW'
-                    }
-                }
-            }
         }
 
         stage('Build and Publish Image') {
             when {
-                branch 'master'  //only run these steps on the master branch
+                branch 'main'  //only run these steps on the master branch
             }
             steps {
                 /*
@@ -97,7 +83,7 @@ pipeline {
     post {
         failure {
             // notify users when the Pipeline fails
-            mail to: 'team@example.com',
+            mail to: 'sreekanthg3105@gmail.com',
                     subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                     body: "Something is wrong with ${env.BUILD_URL}"
         }
