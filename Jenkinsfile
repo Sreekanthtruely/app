@@ -7,8 +7,8 @@ pipeline {
 
     environment {
         //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-        IMAGE = readMavenPom().getArtifactId()
-        VERSION = readMavenPom().getVersion()
+        registry = "sragro/test"
+        registryCredential = 'Dockerhub'
     }
 
     stages {
@@ -36,20 +36,14 @@ pipeline {
         }
 
         stage('Build and Publish Image') {
-            when {
-                branch 'main'  //only run these steps on the master branch
-            }
-            steps {
-                /*
-                 * Multiline strings can be used for larger scripts. It is also possible to put scripts in your shared library
-                 * and load them with 'libaryResource'
-                 */
-                sh """
-          docker build -t ${IMAGE} .
-          docker tag ${IMAGE} ${IMAGE}:${VERSION}
-          docker push ${IMAGE}:${VERSION}
-        """
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry('',registryCredential){
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
-}
+    
