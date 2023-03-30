@@ -1,12 +1,6 @@
 pipeline {
     agent any 
-    
-    environment {
-        //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-        registry = "sragro/test"
-        registryCredential = 'Dockerhub'
-    }
-
+   
     stages {
         stage('Build') {
             steps {
@@ -21,19 +15,9 @@ pipeline {
                     steps {
                         mvn 'test'
                     }
-                
-        }
-
-        stage('Build and Publish Image') {
-            steps{
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                    docker.withRegistry('',registryCredential){
-                        dockerImage.push()
-                    }
-                }
-            }
         }
     }
 }
+
+        
     
