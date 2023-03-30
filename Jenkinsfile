@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-               mvn 'clean install '
+               sh 'mvn clean install '
             }
         }
         stage('Quality Analysis') {
@@ -13,7 +13,7 @@ pipeline {
                
                  //run this stage on any available agent
                     steps {
-                        mvn 'test'
+                       sh 'mvn test'
                     }
         }
     }
