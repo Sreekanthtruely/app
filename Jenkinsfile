@@ -1,31 +1,30 @@
 pipeline {
     agent any 
    
-    stages {
-        stage('Build') {
-            steps {
+      stages {
+          stage('Build') {
+             steps {
                sh 'mvn clean install '
             }
         }
-        stage('Quality Analysis') {
+           stage('Quality Analysis') {
             
                 // run Sonar Scan and Integration tests in parallel. This syntax requires Declarative Pipeline 1.2 or higher
                
                  //run this stage on any available agent
-                    steps {
+                   steps {
                        sh 'mvn test'
                     }
-        }
-        stage('Docker Build') {
-            steps {
-                script {
+	   }
+          stage('Docker Build') {
+		  steps {
 			sh 'docker build -t sragro/New-world .'
 		}
 	    }
 	}
     }
 }
-}
+
 
 
         
