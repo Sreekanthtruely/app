@@ -28,7 +28,7 @@ pipeline {
 	    stage('Pushing Docker Image to Dockerhub') {
             steps {
                 script {
-                 sh """   docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub') {
+                 sh """   docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub') 
                         docker.image("sragro/New-world:${TAG}").push()
                         docker.image("sragro/New-world:${TAG}").push("latest")
 			sh """
@@ -38,7 +38,7 @@ pipeline {
         }
     }
 }
-}
+
 
 
         
