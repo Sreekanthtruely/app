@@ -1,8 +1,6 @@
 pipeline {
     agent any 
-   environment {
-        DATE = new Date().format('yy.M')
-        TAG = "${DATE}.${BUILD_NUMBER}"
+   
     stages {
         stage('Build') {
             steps {
@@ -21,24 +19,13 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-			sh 'docker build -t sragro/New-world:${TAG} .'
-                }
-            }
-        }
-	    stage('Pushing Docker Image to Dockerhub') {
-            steps {
-                script {
-                 sh """   docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub') 
-                        docker.image("sragro/New-world:${TAG}").push()
-                        docker.image("sragro/New-world:${TAG}").push("latest")
-			sh """
-                    }
-                }
-            }
-        }
+			sh 'docker build -t sragro/New-world .'
+		}
+	    }
+	}
     }
 }
-
+}
 
 
         
