@@ -18,7 +18,7 @@ pipeline {
 	   }
           stage('Docker Build') {
 		  steps {
-			sh 'docker build -t sragro/New-world .'
+			sh 'sudo docker build -t sragro/New-world .'
 		}
 	    }
 	}
