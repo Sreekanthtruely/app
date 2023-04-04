@@ -6,12 +6,12 @@ pipeline {
   }
   agent any
   stages {
-    stage('Cloning Git') {
-      steps {
-        git([url: 'https://github.com/Sreekanthtruely/app.git', branch: 'main', credentialsId: 'Git'])
- 
-      }
-    }
+    stage('Build') {
+        steps {
+            sh 'mvn clean install '
+	      
+            }
+        }
     stage('Building image') {
       steps{
         script {
